@@ -60,9 +60,9 @@ class DataProvider extends ChangeNotifier {
   List<MyNotification> get notifications => _filteredNotifications;
 
   DataProvider() {
-    debugPrint("DataProvider Constructor Print log");
     getAllCategory();
-    getAllSubCategory;
+    getAllSubCategory();
+    getAllBrands();
   }
 
   Future<List<Category>> getAllCategory({bool showSnack = false}) async {
@@ -102,6 +102,7 @@ class DataProvider extends ChangeNotifier {
   Future<List<SubCategory>> getAllSubCategory({bool showSnack = false}) async {
     try {
       Response response = await service.getItems(endpointUrl: 'subCategories');
+      debugPrint("getAllSubCategory : ${response}");
       if (response.isOk) {
         ApiResponse<List<SubCategory>> apiResponse =
             ApiResponse<List<SubCategory>>.fromJson(
@@ -133,9 +134,38 @@ class DataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //TODO: should complete getAllBrands
+  Future<List<Brand>> getAllBrands({bool showSnack = false}) async {
+    try {
+      Response response = await service.getItems(endpointUrl: 'brands');
+      if (response.isOk) {
+        ApiResponse<List<Brand>> apiResponse =
+            ApiResponse<List<Brand>>.fromJson(
+          response.body,
+          (json) => (json as List).map((item) => Brand.fromJson(item)).toList(),
+        );
+        _allBrands = apiResponse.data ?? [];
+        _filteredBrands = List.from(_allBrands);
+        notifyListeners();
+        if (showSnack) SnackBarHelper.showSuccessSnackBar(apiResponse.message);
+      }
+    } catch (err) {
+      if (showSnack) SnackBarHelper.showErrorSnackBar(err.toString());
+      rethrow;
+    }
+    return _filteredBrands;
+  }
 
-  //TODO: should complete filterBrands
+  void filteredBrands(String keyword) {
+    if (keyword.isEmpty) {
+      _filteredBrands = List.from(_allBrands);
+    } else {
+      final lowerKeyword = keyword.toLowerCase();
+      _filteredBrands = _allBrands.where((brands) {
+        return (brands.name ?? '').toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
+  }
 
   //TODO: should complete getAllVariantType
 
