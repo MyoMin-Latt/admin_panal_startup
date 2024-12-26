@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class Product {
   String? sId;
   String? name;
@@ -17,28 +18,30 @@ class Product {
 
   Product(
       {this.sId,
-        this.name,
-        this.description,
-        this.quantity,
-        this.price,
-        this.offerPrice,
-        this.proCategoryId,
-        this.proSubCategoryId,
-        this.proBrandId,
-        this.proVariantTypeId,
-        this.proVariantId,
-        this.images,
-        this.createdAt,
-        this.updatedAt,
-        this.iV});
+      this.name,
+      this.description,
+      this.quantity,
+      this.price,
+      this.offerPrice,
+      this.proCategoryId,
+      this.proSubCategoryId,
+      this.proBrandId,
+      this.proVariantTypeId,
+      this.proVariantId,
+      this.images,
+      this.createdAt,
+      this.updatedAt,
+      this.iV});
 
   Product.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
     description = json['description'];
     quantity = json['quantity'];
-    price = json['price']?.toDouble();;
-    offerPrice = json['offerPrice']?.toDouble();;
+    price = json['price']?.toDouble();
+    ;
+    offerPrice = json['offerPrice']?.toDouble();
+    ;
     proCategoryId = json['proCategoryId'] != null
         ? new ProRef.fromJson(json['proCategoryId'])
         : null;
@@ -91,6 +94,11 @@ class Product {
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'Product(sId: $sId, name: $name, description: $description, quantity: $quantity, price: $price, offerPrice: $offerPrice, proCategoryId: $proCategoryId, proSubCategoryId: $proSubCategoryId, proBrandId: $proBrandId, proVariantTypeId: $proVariantTypeId, proVariantId: $proVariantId, images: $images, createdAt: $createdAt, updatedAt: $updatedAt, iV: $iV)';
   }
 }
 
