@@ -64,6 +64,7 @@ class DataProvider extends ChangeNotifier {
     getAllSubCategory();
     getAllBrands();
     getAllVariantType();
+    getAllVariant();
   }
 
   Future<List<Category>> getAllCategory({bool showSnack = false}) async {
